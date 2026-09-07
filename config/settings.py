@@ -97,12 +97,6 @@ DATABASES = {
     }
 }
     # Local fallback so `manage.py` works without a .env for quick checks
-DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
-    }
 
 # ---------------------------------------------------------------------------
 # Auth
