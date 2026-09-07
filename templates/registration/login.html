@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Sign in · OpportunityScout{% endblock %}
+
+{% block content %}
+<div class="min-h-full flex items-center justify-center px-4 py-16">
+  <div class="w-full max-w-sm">
+    <h1 class="font-display text-2xl font-semibold text-white mb-1 text-center">Welcome back</h1>
+    <p class="text-slate-500 text-sm mb-6 text-center">Sign in to access your tracker.</p>
+
+    <form method="post" class="space-y-4 rounded-xl border border-base-700 bg-base-850 p-6">
+      {% csrf_token %}
+      {% for field in form %}
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-1.5">{{ field.label }}</label>
+          {{ field }}
+          {% for error in field.errors %}
+            <p class="text-xs text-rose-400 mt-1">{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endfor %}
+      {% for error in form.non_field_errors %}
+        <p class="text-xs text-rose-400">{{ error }}</p>
+      {% endfor %}
+      <button type="submit"
+              class="w-full rounded-lg bg-gold-500 hover:bg-gold-400 text-base-950 font-semibold text-sm py-2.5 transition-colors">
+        Sign in
+      </button>
+    </form>
+    <p class="text-center text-sm text-slate-500 mt-4">
+      New here? <a href="{% url 'signup' %}" class="text-gold-400 hover:underline">Create an account</a>
+    </p>
+  </div>
+</div>
+<style>
+  input[type=text], input[type=email], input[type=password] {
+    width: 100%; background: #181F2E; border: 1px solid #232B3D; border-radius: 0.5rem;
+    padding: 0.6rem 0.85rem; color: #e2e8f0; font-size: 0.875rem;
+  }
+</style>
+{% endblock %}

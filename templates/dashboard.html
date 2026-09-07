@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Feed · OpportunityScout{% endblock %}
+
+{% block content %}
+<div class="px-4 md:px-8 py-6 max-w-6xl mx-auto">
+
+  <div class="mb-6">
+    <h1 class="font-display text-2xl md:text-3xl font-semibold text-white">Opportunity Feed</h1>
+    <p class="text-slate-500 text-sm mt-1">Live-scouted funded programs, quant roles, and hackathons — refreshed daily.</p>
+  </div>
+
+  <form id="filter-form"
+        hx-get="{% url 'opportunity_list_partial' %}"
+        hx-target="#opportunity-list"
+        hx-swap="innerHTML"
+        hx-trigger="keyup changed delay:400ms from:#q, change from:#category, change from:#funding, change from:#sort"
+        hx-indicator="#search-spinner"
+        class="sticky top-0 z-10 -mx-4 md:-mx-8 px-4 md:px-8 py-4 mb-6 bg-base-950/95 backdrop-blur border-b border-base-700/60">
+    <div class="flex flex-col md:flex-row gap-3">
+      <div class="relative flex-1">
+        <input id="q" name="q" type="text" value="{{ current_query }}"
+               placeholder="Search title, org, or keyword..."
+               autocomplete="off"
+               class="w-full bg-base-850 border border-base-700 rounded-lg px-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-gold-500/50 focus:border-gold-500/50">
+        <span id="search-spinner" class="htmx-indicator absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-500">searching…</span>
+      </div>
+
+      <select id="category" name="category"
+              class="bg-base-850 border border-base-700 rounded-lg px-3 py-2.5 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-gold-500/50">
+        <option value="All" {% if current_category == "All" %}selected{% endif %}>All categories</option>
+        {% for value, label in categories %}
+          <option value="{{ value }}" {% if current_category == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+
+      <select id="funding" name="funding"
+              class="bg-base-850 border border-base-700 rounded-lg px-3 py-2.5 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-gold-500/50">
+        <option value="All">All funding types</option>
+        <option value="Fully Funded">Fully Funded</option>
+        <option value="Partial">Partial</option>
+        <option value="Cash Prize">Cash Prize</option>
+        <option value="Paid Role">Paid Role</option>
+      </select>
+
+      <select id="sort" name="sort"
+              class="bg-base-850 border border-base-700 rounded-lg px-3 py-2.5 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-gold-500/50">
+        <option value="deadline" {% if current_sort == "deadline" %}selected{% endif %}>Deadline: soonest</option>
+        <option value="newest" {% if current_sort == "newest" %}selected{% endif %}>Newest first</option>
+        <option value="title" {% if current_sort == "title" %}selected{% endif %}>Title: A–Z</option>
+      </select>
+    </div>
+  </form>
+
+  <div id="opportunity-list" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+    {% include "partials/opportunity_list.html" %}
+  </div>
+</div>
+
+<!-- Drawer container: opportunity detail swaps in here via hx-get. Empty by default (no visual footprint). -->
+<div id="drawer"></div>
+{% endblock %}

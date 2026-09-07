@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load scout_extras %}
+
+{% block title %}My Tracker · OpportunityScout{% endblock %}
+
+{% block content %}
+<div class="px-4 md:px-8 py-6 max-w-7xl mx-auto">
+  <div class="mb-6">
+    <h1 class="font-display text-2xl md:text-3xl font-semibold text-white">My Tracker</h1>
+    <p class="text-slate-500 text-sm mt-1">Your saved opportunities, organized by application stage.</p>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+    {% for value, label in statuses %}
+      <div class="rounded-xl border border-base-700 bg-base-850/60 flex flex-col">
+        <div class="px-4 py-3 border-b border-base-700/60 flex items-center justify-between">
+          <span class="text-sm font-semibold {{ value|status_color }} inline-block rounded-full border px-2.5 py-0.5">{{ label }}</span>
+          <span class="text-xs text-slate-600">{{ columns|get_item:value|length }}</span>
+        </div>
+        <div class="flex-1 p-3 space-y-3 min-h-[120px]">
+          {% for saved in columns|get_item:value %}
+            <div class="rounded-lg border border-base-700 bg-base-900 p-3">
+              <button
+                hx-get="{% url 'opportunity_detail' saved.opportunity.slug %}"
+                hx-target="#drawer"
+                hx-swap="innerHTML"
+                class="text-sm font-medium text-slate-200 hover:text-gold-400 text-left leading-snug">
+                {{ saved.opportunity.title }}
+              </button>
+              <p class="text-xs text-slate-500 mt-1">{{ saved.opportunity.organization }}</p>
+              {% if saved.opportunity.deadline %}
+                <p class="text-xs mt-2 {% if saved.opportunity.is_urgent %}text-rose-400 font-medium{% else %}text-slate-600{% endif %}">
+                  Due {{ saved.opportunity.deadline|date:"M j" }}
+                </p>
+              {% endif %}
+              <div class="mt-2">
+                {% include "partials/status_badge.html" with opportunity=saved.opportunity current_status=saved.status %}
+              </div>
+            </div>
+          {% empty %}
+            <p class="text-xs text-slate-700 text-center py-6">Nothing here yet.</p>
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<div id="drawer"></div>
+{% endblock %}

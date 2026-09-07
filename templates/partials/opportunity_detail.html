@@ -1,0 +1,74 @@
+{% load scout_extras %}
+<div class="fixed inset-0 z-40" id="drawer-overlay">
+  <!-- Backdrop -->
+  <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"
+       onclick="document.getElementById('drawer').innerHTML='';"></div>
+
+  <!-- Panel -->
+  <aside class="absolute right-0 top-0 h-full w-full max-w-md bg-base-900 border-l border-base-700 shadow-2xl overflow-y-auto
+                animate-[slidein_180ms_ease-out]">
+    <div class="flex items-start justify-between gap-4 px-6 py-5 border-b border-base-700/60">
+      <div>
+        <div class="flex gap-2 mb-2">
+          <span class="text-[11px] font-medium rounded-full border px-2 py-0.5 {{ opportunity.category|category_color }}">
+            {{ opportunity.category }}
+          </span>
+          <span class="text-[11px] font-medium rounded-full border px-2 py-0.5 {{ opportunity.funding_status|funding_color }}">
+            {{ opportunity.funding_status }}
+          </span>
+        </div>
+        <h2 class="font-display text-lg font-semibold text-white leading-snug">{{ opportunity.title }}</h2>
+        {% if opportunity.organization %}
+          <p class="text-sm text-slate-500 mt-0.5">{{ opportunity.organization }}</p>
+        {% endif %}
+      </div>
+      <button onclick="document.getElementById('drawer').innerHTML='';"
+              class="text-slate-500 hover:text-slate-200 text-xl leading-none">&times;</button>
+    </div>
+
+    <div class="px-6 py-5 space-y-6">
+      <div class="flex items-center justify-between">
+        <div class="text-sm">
+          {% if opportunity.deadline %}
+            <span class="{% if opportunity.is_urgent %}text-rose-400 font-semibold{% else %}text-slate-300{% endif %}">
+              Deadline: {{ opportunity.deadline|date:"M j, Y" }}
+            </span>
+            {% if opportunity.is_urgent %}
+              <span class="block text-rose-400 text-xs mt-0.5">Only {{ opportunity.days_to_deadline }} day(s) left</span>
+            {% endif %}
+          {% else %}
+            <span class="text-slate-500">Rolling / no fixed deadline</span>
+          {% endif %}
+        </div>
+        {% include "partials/status_badge.html" %}
+      </div>
+
+      {% if opportunity.summary %}
+        <div>
+          <h3 class="text-xs font-semibold uppercase tracking-wide text-slate-500 mb-2">Summary</h3>
+          <p class="text-sm text-slate-300 leading-relaxed">{{ opportunity.summary }}</p>
+        </div>
+      {% endif %}
+
+      {% if opportunity.eligibility_criteria %}
+        <div>
+          <h3 class="text-xs font-semibold uppercase tracking-wide text-slate-500 mb-2">Eligibility</h3>
+          <p class="text-sm text-slate-300 leading-relaxed whitespace-pre-line">{{ opportunity.eligibility_criteria }}</p>
+        </div>
+      {% endif %}
+
+      <a href="{{ opportunity.url }}" target="_blank" rel="noopener noreferrer"
+         class="block w-full text-center rounded-lg bg-gold-500 hover:bg-gold-400 text-base-950 font-semibold text-sm py-2.5 transition-colors">
+        View official page ↗
+      </a>
+
+      <p class="text-[11px] text-slate-600">
+        Scouted {{ opportunity.date_scraped|date:"M j, Y" }} · Last confirmed active {{ opportunity.last_seen_at|date:"M j, Y" }}
+      </p>
+    </div>
+  </aside>
+</div>
+
+<style>
+  @keyframes slidein { from { transform: translateX(24px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+</style>

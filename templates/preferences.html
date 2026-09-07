@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Preferences · OpportunityScout{% endblock %}
+
+{% block content %}
+<div class="px-4 md:px-8 py-6 max-w-xl mx-auto">
+  <h1 class="font-display text-2xl font-semibold text-white mb-1">Preferences</h1>
+  <p class="text-slate-500 text-sm mb-6">Tune what OpportunityScout prioritizes for you. Filtering happens on the feed search.</p>
+
+  <form method="post" class="space-y-5 rounded-xl border border-base-700 bg-base-850 p-6">
+    {% csrf_token %}
+    {% for field in form %}
+      <div>
+        <label class="block text-sm font-medium text-slate-300 mb-1.5">{{ field.label }}</label>
+        {{ field }}
+        {% if field.help_text %}
+          <p class="text-xs text-slate-600 mt-1">{{ field.help_text }}</p>
+        {% endif %}
+        {% for error in field.errors %}
+          <p class="text-xs text-rose-400 mt-1">{{ error }}</p>
+        {% endfor %}
+      </div>
+    {% endfor %}
+    <button type="submit"
+            class="w-full rounded-lg bg-gold-500 hover:bg-gold-400 text-base-950 font-semibold text-sm py-2.5 transition-colors">
+      Save preferences
+    </button>
+  </form>
+</div>
+<style>
+  .input-field, input[type=text], input[type=email], input[type=password] {
+    width: 100%; background: #181F2E; border: 1px solid #232B3D; border-radius: 0.5rem;
+    padding: 0.6rem 0.85rem; color: #e2e8f0; font-size: 0.875rem;
+  }
+</style>
+{% endblock %}

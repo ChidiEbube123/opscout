@@ -1,0 +1,37 @@
+{% load scout_extras %}
+<div id="status-badge-{{ opportunity.id }}" class="flex items-center gap-2">
+  {% if user.is_authenticated %}
+    {% if current_status %}
+      <select
+        class="text-xs font-medium rounded-full border px-2.5 py-1 bg-transparent cursor-pointer focus:outline-none focus:ring-1 focus:ring-gold-500/50 {{ current_status|status_color }}"
+        hx-post="{% url 'toggle_save' opportunity.slug %}"
+        hx-target="#status-badge-{{ opportunity.id }}"
+        hx-swap="outerHTML"
+        hx-trigger="change"
+        name="status">
+        {% for value, label in statuses %}
+          <option value="{{ value }}" {% if value == current_status %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+      <button
+        hx-post="{% url 'unsave' opportunity.slug %}"
+        hx-target="#status-badge-{{ opportunity.id }}"
+        hx-swap="outerHTML"
+        title="Remove from tracker"
+        class="text-xs text-slate-500 hover:text-rose-400 transition-colors">
+        ✕
+      </button>
+    {% else %}
+      <button
+        hx-post="{% url 'toggle_save' opportunity.slug %}"
+        hx-vals='{"status": "Interested"}'
+        hx-target="#status-badge-{{ opportunity.id }}"
+        hx-swap="outerHTML"
+        class="text-xs font-semibold rounded-full border border-gold-500/40 text-gold-400 px-3 py-1 hover:bg-gold-500/10 transition-colors">
+        + Save
+      </button>
+    {% endif %}
+  {% else %}
+    <a href="{% url 'login' %}" class="text-xs text-slate-500 hover:text-gold-400">Sign in to save</a>
+  {% endif %}
+</div>

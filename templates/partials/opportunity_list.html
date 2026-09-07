@@ -1,0 +1,11 @@
+{% load scout_extras %}
+{% if opportunities %}
+  {% for opportunity in opportunities %}
+    {% include "partials/opportunity_card.html" with opportunity=opportunity current_status=saved_map|get_item:opportunity.id %}
+  {% endfor %}
+{% else %}
+  <div class="col-span-full text-center py-16 border border-dashed border-base-700 rounded-xl">
+    <p class="text-slate-400 font-medium">No opportunities match those filters.</p>
+    <p class="text-slate-600 text-sm mt-1">Try clearing the search or widening the category.</p>
+  </div>
+{% endif %}
