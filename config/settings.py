@@ -8,6 +8,8 @@ Designed to run 100% free on:
 - GitHub Actions (free cron runner for the ingestion command)
 """
 import os
+import socket
+
 from pathlib import Path
 from datetime import timedelta
 
@@ -84,7 +86,17 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database - Supabase Postgres (pooled connection recommended: port 6543)
 # ---------------------------------------------------------------------------
 DATABASE_URL = os.environ.get("DATABASE_URL")
-DATABASES = {
+IS_LOCAL = "Chidis-MacBook-Air" in socket.gethostname()
+
+if   IS_LOCAL:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",  # Uses Django's default path structure
+        }#
+    }
+else:
+    DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME":  "postgres",
@@ -97,6 +109,7 @@ DATABASES = {
         },
     }
 }
+
     # Local fallback so `manage.py` works without a .env for quick checks
 
 # ---------------------------------------------------------------------------

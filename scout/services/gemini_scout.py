@@ -54,29 +54,7 @@ or rolling/no fixed deadline). Do not include duplicates within the array.
 # blowing the free-tier daily request budget in a single run.
 # ---------------------------------------------------------------------------
 SEARCH_LANES: list[dict[str, str]] = [
-    {
-        "key": "msc_europe",
-        "prompt": (
-            "Search for fully funded or generously funded MSc programs in Computer Science, "
-            "Data Science, Quantitative Finance, Machine Learning, or Applied Mathematics in "
-            "Europe (UK, Germany, Netherlands, Switzerland, France, Nordics) that are currently "
-            "accepting international applicants, including from Nigeria/Africa, with application "
-            "deadlines that have NOT yet passed. Prioritize fully-funded scholarships "
-            "(tuition waiver + stipend) such as DAAD, Chevening-adjacent, Eiffel, Swiss Government "
-            "Excellence, Erasmus Mundus, or university-specific fully funded MSc scholarships."
-        ),
-    },
-    {
-        "key": "quant_roles",
-        "prompt": (
-            "Search for entry-level or graduate Quantitative Developer, Quant Researcher, or "
-            "Quant Trading Analyst roles at hedge funds, prop trading firms, or banks (e.g. "
-            "Jane Street, Optiver, Jump Trading, Citadel Securities, IMC, DRW, XTX Markets, "
-            "Two Sigma, G-Research) that are open to international candidates and explicitly "
-            "mention visa sponsorship or relocation support. Focus on roles based in the UK, "
-            "EU, Singapore, or US that sponsor work visas."
-        ),
-    },
+    
     {
         "key": "swe_roles",
         "prompt": (
@@ -104,17 +82,7 @@ SEARCH_LANES: list[dict[str, str]] = [
             "application windows right now."
         ),
     },
-    {
-        "key": "yc_startups",
-        "prompt": (
-            "Search Y Combinator's job board at workatastartup.com for open Software Engineer, "
-            "Backend Engineer, or Quantitative/Data Engineer roles at YC-backed startups that are "
-            "either fully remote, or explicitly state they offer visa sponsorship or relocation "
-            "support for international candidates. Prioritize roles open to candidates currently "
-            "based in Nigeria or Africa. Include the direct workatastartup.com or company "
-            "application URL for each listing, not the generic job board homepage."
-        ),
-    },
+    
 
 ]
 
