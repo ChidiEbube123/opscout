@@ -141,7 +141,8 @@ GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
 
 # How stale (in days) a deadline must be before we auto-deactivate it
-OPPORTUNITY_ARCHIVE_AFTER_DAYS = int(os.environ.get("OPPORTUNITY_ARCHIVE_AFTER_DAYS", "1"))
+raw_days = os.environ.get("OPPORTUNITY_ARCHIVE_AFTER_DAYS")
+OPPORTUNITY_ARCHIVE_AFTER_DAYS = int(raw_days if raw_days else "1")
 
 # ---------------------------------------------------------------------------
 # Logging - stdout only (Vercel/GitHub Actions capture stdout logs)
