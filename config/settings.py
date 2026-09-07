@@ -24,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "insecure-dev-key-change-me")
 DEBUG = os.environ.get("DJANGO_DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = os.environ.get(
-    "DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost,.vercel.app"
-).split(",")
-
+ALLOWED_HOSTS =[
+    "opscout.vercel.app",
+    "opscout-h8fizap8z-chidiebube-s-projects.vercel.app"
+]
 CSRF_TRUSTED_ORIGINS = [
     o for o in os.environ.get("CSRF_TRUSTED_ORIGINS", "https://*.vercel.app").split(",") if o
 ]
